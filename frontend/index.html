@@ -1,27 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CostByte — CareerBoost</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
 <header>
-    <img src="assets/logo.png" class="logo">
-    <h1>CareerBoost – Your Career, Amplified by Synthetic Intelligence</h1>
-    <h3>Slogan: CareerBoost</h3>
+    <div class="hamburger">
+        <div></div><div></div><div></div>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="#" data-route="home">Home</a>
+        <a href="#" data-route="upload">Upload Resume</a>
+        <a href="#" data-route="dashboard">Dashboard</a>
+        <a href="#" data-route="status">AI Status</a>
+        <a href="#" data-route="contact">Support</a>
+        <a href="#" data-route="logout">Logout</a>
+    </nav>
 </header>
 
-<section class="hero">
-    <h2>Upload Your Resume → AI Rewrites → We Apply Automatically</h2>
-    <a href="register.html" class="btn">Get Started – R500</a>
-</section>
-
-<section id="features">
-    <div class="card">AI Resume Rewrite</div>
-    <div class="card">Automatic Job Applications</div>
-    <div class="card">AI Job Scanner</div>
-    <div class="card">Self-Healing, Self-Funding</div>
-</section>
-</body>
-</html>
+<div id="main"></div>
+<script src="js/app.js"></script>
