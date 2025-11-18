@@ -1,17 +1,166 @@
-<header>
-    <div class="hamburger">
-        <div></div><div></div><div></div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CostByte | CareerBoost</title>
 
-    <nav class="nav-menu">
-        <a href="#" data-route="home">Home</a>
-        <a href="#" data-route="upload">Upload Resume</a>
-        <a href="#" data-route="dashboard">Dashboard</a>
-        <a href="#" data-route="status">AI Status</a>
-        <a href="#" data-route="contact">Support</a>
-        <a href="#" data-route="logout">Logout</a>
+<style>
+/* ============================
+   INLINE CSS START
+============================ */
+body {
+    margin: 0; font-family: Arial, sans-serif; background:#f4f7f9;
+}
+header {background:#0d6efd;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
+header img {height:50px;}
+nav {display:flex;gap:15px;}
+nav a {color:#fff;text-decoration:none;font-weight:bold;}
+main {padding:20px;}
+section {margin-bottom:40px;}
+h1,h2,h3 {color:#333;}
+button {padding:10px 20px;border:none;border-radius:5px;background:#0d6efd;color:#fff;cursor:pointer;}
+input, select {padding:10px;width:100%;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
+.container {max-width:1200px;margin:0 auto;}
+.card {background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);margin-bottom:20px;}
+/* Dashboard specific */
+.dashboard-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.chart-container {background:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.hidden {display:none;}
+/* Animations */
+@keyframes fadeIn {0%{opacity:0}100%{opacity:1}}
+.fadeIn {animation: fadeIn 1s ease-in;}
+</style>
+
+</head>
+<body>
+
+<header>
+    <img src="assets/logo.svg" alt="CostByte CareerBoost">
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#register">Register</a>
+        <a href="#login">Login</a>
+        <a href="#dashboard">Dashboard</a>
     </nav>
 </header>
 
-<div id="main"></div>
-<script src="js/app.js"></script>
+<main>
+<section id="home" class="fadeIn">
+    <div class="container">
+        <h1>Welcome to CareerBoost by CostByte</h1>
+        <p>Upload your resume, AI will rewrite, add your photo & qualifications, then apply automatically to jobs!</p>
+        <img src="assets/banner.svg" alt="CareerBoost Banner" style="width:100%;max-height:300px;object-fit:cover;">
+        <button onclick="scrollToSection('register')">Get Started</button>
+    </div>
+</section>
+
+<section id="register" class="fadeIn hidden">
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <input type="file" id="photoUpload" accept="image/*" required>
+            <input type="file" id="resumeUpload" accept=".pdf,.docx" required>
+            <input type="text" id="qualifications" placeholder="Qualifications (Degrees, Diplomas, Certificates)" required>
+            <button type="submit">Pay & Submit (R500)</button>
+        </form>
+        <div id="registerMsg"></div>
+    </div>
+</section>
+
+<section id="login" class="fadeIn hidden">
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div id="loginMsg"></div>
+    </div>
+</section>
+
+<section id="dashboard" class="fadeIn hidden">
+    <div class="container">
+        <h2>Owner Dashboard</h2>
+        <div class="dashboard-grid">
+            <div class="card chart-container">
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+            </div>
+            <div class="card chart-container">
+                <h3>Total Revenue</h3>
+                <p id="totalRevenue">R0</p>
+            </div>
+            <div class="card chart-container">
+                <h3>Paid Applicants</h3>
+                <p id="paidApplicants">0</p>
+            </div>
+            <div class="card chart-container">
+                <h3>AI Task Status</h3>
+                <p id="aiStatus">All systems operational</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<script>
+/* ============================
+   INLINE JS START
+============================ */
+
+function scrollToSection(id){
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// Simple form submissions (AJAX to backend)
+document.getElementById('registerForm').onsubmit = async function(e){
+    e.preventDefault();
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const resumeFile = document.getElementById('resumeUpload').files[0];
+    const photoFile = document.getElementById('photoUpload').files[0];
+    const qualifications = document.getElementById('qualifications').value;
+
+    // Simple frontend validation
+    if(!email || !password || !resumeFile || !photoFile || !qualifications){
+        document.getElementById('registerMsg').innerText = "All fields required";
+        return;
+    }
+
+    document.getElementById('registerMsg').innerText = "Processing...";
+
+    // Simulate API call
+    setTimeout(()=>{document.getElementById('registerMsg').innerText="Registration & AI resume complete!";},2000);
+};
+
+document.getElementById('loginForm').onsubmit = async function(e){
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if(!email || !password){
+        document.getElementById('loginMsg').innerText="Enter email and password";
+        return;
+    }
+
+    document.getElementById('loginMsg').innerText="Logging in...";
+    setTimeout(()=>{scrollToSection('dashboard');},1000);
+};
+
+// Simulated Dashboard Data
+document.getElementById('totalUsers').innerText = 152;
+document.getElementById('totalRevenue').innerText = "R76,500";
+document.getElementById('paidApplicants').innerText = 120;
+document.getElementById('aiStatus').innerText = "AI Agents operational";
+
+</script>
+
+</body>
+</html>
