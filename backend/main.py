@@ -1,22 +1,30 @@
-from fastapi import FastAPI, UploadFile, File, Depends
-from routers import auth, applicants, dashboard, uploads
-from payment_router import payment_router
-from security import military_grade_security
-from self_healing import auto_patch_system
-import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="CostByte - CareerBoost")
+from backend.database import Base, engine
+from backend.routers import auth, applicants, dashboard, uploads, payment_router
 
-app.include_router(auth.router)
-app.include_router(applicants.router)
-app.include_router(dashboard.router)
-app.include_router(uploads.router)
-app.include_router(payment_router)
+# Auto-generate tables
+Base.metadata.create_all(bind=engine)
 
-@app.on_event("startup")
-async def startup_event():
-    auto_patch_system()
-    military_grade_security()
+app = FastAPI(title="AI Job Platform", version="1.0")
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Routers
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(applicants.router, prefix="/applicants", tags=["Applicants"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])
+app.include_router(uploads.router, prefix="/uploads", tags=["Uploads"])
+app.include_router(payment_router.router, prefix="/payments", tags=["Payments"])
+
+@app.get("/")
+def home():
+    return {"status": "running", "project": "AI Job Platform"}
