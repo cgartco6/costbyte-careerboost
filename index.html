@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareerBoost — Single Page System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ========================= CSS ========================= -->
+<style>
+body {margin:0; font-family:Arial, sans-serif; background:#f4f7f9;}
+
+/* HEADER */
+header {background:#0d6efd; color:#fff; padding:15px; display:flex; justify-content:space-between; align-items:center;}
+header h1 {margin:0; font-size:22px;}
+
+/* HAMBURGER */
+.hamburger {cursor:pointer; font-size:26px; padding:10px;}
+.nav-menu {display:none; position:absolute; top:60px; right:20px; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.nav-menu a {display:block; padding:12px; text-decoration:none; color:#333; border-bottom:1px solid #eee;}
+.nav-menu a:hover {background:#f5f5f5;}
+.nav-menu:last-child {border-bottom:none;}
+
+/* SECTION STRUCTURE */
+section {padding:20px; display:none;}
+.active-section {display:block;}
+
+.container {max-width:1200px; margin:auto;}
+
+/* SHOP ITEMS */
+.shop-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
+.item-card {background:#fff; padding:15px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1); text-align:center;}
+.item-card h3 {margin:5px 0;}
+button {padding:10px 15px; border:none; background:#0d6efd; color:#fff; border-radius:5px; cursor:pointer;}
+button:hover {background:#0b57d0;}
+
+/* CART */
+#cartContainer {background:#fff; padding:15px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1); margin-top:20px;}
+.cart-item {display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;}
+
+/* LOGIN */
+.login-box {max-width:400px; margin:auto; background:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);}
+input {width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:5px;}
+
+/* DASHBOARD */
+.dashboard-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
+.card {background:#fff; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);}
+.stat {font-size:30px; font-weight:bold; margin-top:10px;}
+
+</style>
+</head>
+<body>
+
+<!-- ========================= HEADER ========================= -->
+<header>
+    <h1>CareerBoost</h1>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="nav-menu" id="menu">
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('shop')">Shop</a>
+        <a href="#" onclick="showSection('cart')">Shopping Cart</a>
+        <a href="#" onclick="showSection('login')">Login</a>
+        <a href="#" onclick="showDashboard()">Dashboard</a>
+    </div>
+</header>
+
+<!-- ========================= HOME ========================= -->
+<section id="home" class="active-section">
+    <div class="container">
+        <h2>Welcome to CareerBoost</h2>
+        <p>Upload your resume, get AI optimization, and let autoposters apply to jobs automatically.</p>
+    </div>
+</section>
+
+<!-- ========================= SHOP ========================= -->
+<section id="shop">
+    <div class="container">
+        <h2>CareerBoost Packages</h2>
+        <div class="shop-grid">
+            <div class="item-card">
+                <h3>AI Resume Rewrite</h3>
+                <p>R 500</p>
+                <button onclick="addToCart('AI Resume Rewrite', 500)">Add to Cart</button>
+            </div>
+            <div class="item-card">
+                <h3>Resume + Photo + Qualification Integration</h3>
+                <p>R 350</p>
+                <button onclick="addToCart('Resume + Photo + Qualification', 350)">Add to Cart</button>
+            </div>
+            <div class="item-card">
+                <h3>Full Job Autoposter</h3>
+                <p>R 999</p>
+                <button onclick="addToCart('Full Job Autoposter', 999)">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================= CART ========================= -->
+<section id="cart">
+    <div class="container">
+        <h2>Your Cart</h2>
+        <div id="cartContainer"></div>
+        <h3 id="cartTotal">Total: R0</h3>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+</section>
+
+<!-- ========================= LOGIN ========================= -->
+<section id="login">
+    <div class="container">
+        <div class="login-box">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username (admin)">
+            <input type="password" id="password" placeholder="Password (12345)">
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+</section>
+
+<!-- ========================= DASHBOARD ========================= -->
+<section id="dashboard">
+    <div class="container">
+        <h2>Owner Dashboard</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Total Users</h3>
+                <div id="statUsers" class="stat">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Revenue</h3>
+                <div id="statRevenue" class="stat">R0</div>
+            </div>
+            <div class="card">
+                <h3>AI Status</h3>
+                <div id="statAI" class="stat">Operational</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================= JS ========================= -->
+<script>
+/* ---------------------------------------------------
+   HAMBURGER MENU
+--------------------------------------------------- */
+function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+/* ---------------------------------------------------
+   SECTION SWITCHING
+--------------------------------------------------- */
+function showSection(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active-section"));
+    document.getElementById(id).classList.add("active-section");
+    document.getElementById("menu").style.display = "none";
+}
+
+/* ---------------------------------------------------
+   SHOPPING CART
+--------------------------------------------------- */
+let cart = [];
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    updateCartUI();
+    alert(name + " added to cart");
+}
+
+function updateCartUI() {
+    const container = document.getElementById("cartContainer");
+    container.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        container.innerHTML += `
+            <div class="cart-item">
+                <span>${item.name} (R${item.price})</span>
+                <button onclick="removeFromCart(${index})">X</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("cartTotal").textContent =
+        "Total: R" + cart.reduce((a, b) => a + b.price, 0);
+}
+
+function removeFromCart(i) {
+    cart.splice(i, 1);
+    updateCartUI();
+}
+
+function checkout() {
+    alert("Checkout processing… (simulated)");
+}
+
+/* ---------------------------------------------------
+   LOGIN SYSTEM (STATIC DEMO)
+--------------------------------------------------- */
+function login() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    if (user === "admin" && pass === "12345") {
+        alert("Login successful");
+        showDashboard();
+    } else {
+        alert("Incorrect login");
+    }
+}
+
+/* ---------------------------------------------------
+   DASHBOARD LOAD
+--------------------------------------------------- */
+function showDashboard() {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active-section"));
+    document.getElementById("dashboard").classList.add("active-section");
+
+    // realistic fake dashboard data
+    document.getElementById("statUsers").textContent = Math.floor(Math.random()*500 + 100);
+    document.getElementById("statRevenue").textContent = "R" + Math.floor(Math.random()*50000 + 5000);
+    document.getElementById("statAI").textContent = "Operational";
+}
+
+</script>
+
+</body>
+</html>
