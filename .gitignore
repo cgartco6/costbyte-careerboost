@@ -3,3 +3,10 @@ vault.key
 *.pem
 *.key
 .env
+__pycache__/
+*.pyc
+uploads/
+node_modules/
+*.log
+dist/
+build/
