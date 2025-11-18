@@ -1,0 +1,13 @@
+// Upload JS
+async function uploadFile(fileInputId, userId){
+    const file = document.getElementById(fileInputId).files[0];
+    if(!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(`/uploads/resume/${userId}`, {
+        method:'POST',
+        body:formData
+    });
+    return await response.json();
+}
