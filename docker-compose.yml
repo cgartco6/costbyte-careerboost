@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - "80:8080"
+    environment:
+      - VAULT_KEY_PATH=/vault.key
