@@ -1,0 +1,45 @@
+.hamburger {
+    width: 40px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger div {
+    height: 5px;
+    margin: 6px;
+    background: #fff;
+    transition: 0.4s;
+}
+
+.hamburger.open div:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+
+.hamburger.open div:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open div:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+
+.nav-menu {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: #000;
+    border-radius: 15px;
+    padding: 15px;
+    display: none;
+}
+
+.nav-menu.nav-active {
+    display: block;
+}
+
+.nav-menu a {
+    color: #fff;
+    display: block;
+    padding: 10px;
+    font-size: 1.2rem;
+}
