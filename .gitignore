@@ -1,0 +1,5 @@
+secure_vault.dat
+vault.key
+*.pem
+*.key
+.env
