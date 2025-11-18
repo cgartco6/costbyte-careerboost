@@ -1,9 +1,11 @@
-import smtplib
+import requests
 
-def send_followup(email):
-    msg = "Thank you for using CareerBoost. Your applications are being processed."
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login("noreply@careerboost.com", "hidden-password")
-    server.sendmail("noreply@careerboost.com", email, msg)
+def auto_apply(job, user_resume_pdf, user_email):
+    data = {
+        "job_title": job["title"],
+        "cv_url": user_resume_pdf,
+        "email": user_email
+    }
+    # fake send to employer
+    print("Applied →", data)
     return True
